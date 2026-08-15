@@ -1,12 +1,12 @@
 (function () {
   var duration = 12624 * 1000;
-  var storageKey = 'mta-countdown-end-v1';
+  var storageKey = 'mta-countdown-end-session-v1';
   var output = document.getElementById('mta-countdown-value');
   if (!output) return;
 
   var now = Date.now();
   var end = 0;
-  try { end = parseInt(localStorage.getItem(storageKey), 10) || 0; } catch (error) {}
+  try { end = parseInt(sessionStorage.getItem(storageKey), 10) || 0; } catch (error) {}
 
   if (!end) {
     end = now + duration;
@@ -14,7 +14,7 @@
     end += (Math.floor((now - end) / duration) + 1) * duration;
   }
 
-  try { localStorage.setItem(storageKey, String(end)); } catch (error) {}
+  try { sessionStorage.setItem(storageKey, String(end)); } catch (error) {}
 
   function pad(value) {
     return String(value).padStart(2, '0');
@@ -24,7 +24,7 @@
     var remaining = end - Date.now();
     if (Math.sign(remaining) !== 1) {
       end += (Math.floor(Math.abs(remaining) / duration) + 1) * duration;
-      try { localStorage.setItem(storageKey, String(end)); } catch (error) {}
+      try { sessionStorage.setItem(storageKey, String(end)); } catch (error) {}
       remaining = end - Date.now();
     }
 
