@@ -1,4 +1,25 @@
 (function () {
+  var segmentEight = document.getElementById('mta-segment-eight');
+  if (segmentEight) {
+    segmentEight.muted = true;
+    segmentEight.defaultMuted = true;
+
+    function playSegmentEight() {
+      segmentEight.muted = true;
+      var attempt = segmentEight.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(function () {});
+      }
+    }
+
+    segmentEight.addEventListener('loadedmetadata', playSegmentEight, { once: true });
+    segmentEight.addEventListener('canplay', playSegmentEight, { once: true });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') playSegmentEight();
+    });
+    playSegmentEight();
+  }
+
   var duration = 12624 * 1000;
   var storageKey = 'mta-countdown-end-session-v1';
   var output = document.getElementById('mta-countdown-value');
